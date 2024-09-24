@@ -11,6 +11,22 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TutoController extends AbstractController
 {
+
+    #[Route('/tuto/{slug}', name: 'app_tuto_details')]
+    public function view(EntityManagerInterface $entityManager, string $slug): Response
+    {
+        $tuto = $entityManager->getRepository(Tuto::class)->findOneByslug($slug);
+        
+
+        if (!$tuto) {
+           return $this-> redirectToRoute('app_home');
+        }
+
+        return $this->render('tuto/details.html.twig', [
+            'tuto' => $tuto
+        ]);
+    }
+
     #[Route('/tuto/{id}', name: 'app_tuto')]
     public function index(TutoRepository $tutoRepository, int $id): Response
     {
@@ -36,7 +52,7 @@ class TutoController extends AbstractController
         $product->setSubtitle('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit.');
         $product->setDescription('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit.');
         $product->setImage('img4.jpg');
-        $product->setVideo('7ytPqdXPQhE&ab');
+        $product->setVideo('https://www.youtube.com/watch?v=ekytObUD4KQ');
         $product->setLink('https://www.formation-facile.fr/tutos/unity');
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
