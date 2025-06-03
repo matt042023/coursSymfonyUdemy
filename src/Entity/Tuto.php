@@ -2,37 +2,57 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\TutoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TutoRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'tuto:item']),
+        new GetCollection(normalizationContext: ['groups' => 'tuto:list'])
+    ],
+    order: ['name' => 'ASC'],
+    paginationEnabled: false,
+)]
 class Tuto
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?string $subtitle = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?string $video = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['tuto:list', 'tuto:item'])]
     private ?string $link = null;
 
     public function getId(): ?int
